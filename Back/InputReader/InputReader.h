@@ -6,18 +6,8 @@
 #include <filesystem>
 #include <fstream>
 #include <vector>
-
+#include "../aux.h"
 // TODO: Mover essas declarações de struct para um lugar mais adequado
-struct Config {
-    int quantum;
-    int aging;
-};
-
-struct Process {
-    int creation;
-    int duration;
-    int priority;
-};
 
 class InputReader {
     public:
