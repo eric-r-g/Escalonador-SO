@@ -10,7 +10,10 @@ using namespace std;
 // TODO: ver alguma forma melhor para saida;
 struct saida {
     vector <interv> intervalos;
-    double t_medio_vida;
+    string identif;
+    double tt;
+    double tw;
+    double num_trocas;
 };
 
 struct interv {
