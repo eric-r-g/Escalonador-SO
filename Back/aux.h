@@ -28,10 +28,10 @@ struct Config {
 };
 
 struct Process {
+    int id;
     int creation;
     int duration;
     int priority;
-    int id;
 };
 
 #endif
