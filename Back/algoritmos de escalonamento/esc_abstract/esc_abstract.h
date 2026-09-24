@@ -6,10 +6,9 @@
 #include <string>
 
 class esc_abstract{
-
     public:
-    virtual saida exec_process() = 0;
-    void calc_estat(saida& retorno, vector <interv>& intervalos);
+    virtual Saida exec_process(vector <Process> processos) = 0;
+    void calc_estat(Saida& retorno);
 };
 
 #endif

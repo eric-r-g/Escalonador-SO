@@ -8,15 +8,16 @@
 using namespace std;
 
 // TODO: ver alguma forma melhor para saida;
-struct saida {
-    vector <interv> intervalos;
-    string identif;
+struct Saida {
+    vector <Interv> intervalos;
+    string id;
+    
     double tt;
     double tw;
     double num_trocas;
 };
 
-struct interv {
+struct Interv {
     int id;
     int ini, fim;
 };
@@ -30,6 +31,7 @@ struct Process {
     int creation;
     int duration;
     int priority;
+    int id;
 };
 
 #endif
