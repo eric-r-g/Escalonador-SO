@@ -6,10 +6,9 @@
 #include <string>
 
 class esc_abstract{
-    private:
-
     public:
-    saida exec_process();
+    virtual Saida exec_process(vector <Process> processos) = 0;
+    void calc_estat(Saida& retorno);
 };
 
 #endif
