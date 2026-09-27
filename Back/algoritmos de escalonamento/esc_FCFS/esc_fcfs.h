@@ -7,6 +7,7 @@
 class esc_fcfs : esc_abstract {
     public:
     Saida exec_process(vector <Process> processos);
+    esc_fcfs();
 };
 
 #endif

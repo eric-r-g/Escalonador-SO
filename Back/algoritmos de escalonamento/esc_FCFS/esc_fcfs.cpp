@@ -21,3 +21,7 @@ Saida esc_fcfs::exec_process(vector <Process> processos){
     calc_estat(saida);
     return saida;
 }
+
+esc_fcfs::esc_fcfs(){
+    id = "esc_fcfs";
+}
