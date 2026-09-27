@@ -1,7 +1,5 @@
 import { Bar } from 'react-chartjs-2'
 
-import { Paper } from '@mui/material'
-
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -22,7 +20,16 @@ ChartJS.register(
 function Chart({ data }) {
   if (!data || !data.intervalos) return <p>Carregando gráfico...</p>
     
-  const intervals = data.intervalos
+  const intervals = data.intervalos;
+  const maxTime = Math.max(...intervals.map((interval) => interval.fim));
+  const colors = [
+            'rgba(54, 162, 235, 0.8)',
+            'rgba(255, 99, 132, 0.8)',
+            'rgba(75, 192, 192, 0.8)',
+            'rgba(255, 206, 86, 0.8)',
+            'rgba(153, 102, 255, 0.8)',
+            'rgba(255, 159, 64, 0.8)',
+        ];
 
   const chartData = {
     datasets: [
@@ -32,15 +39,10 @@ function Chart({ data }) {
           y: `P${interval.id}`,
           x: [interval.ini, interval.fim],
         })),
+        
         backgroundColor: intervals.map((interval) => {
-          const colors = {
-            1: 'rgba(54, 162, 235, 0.8)',
-            2: 'rgba(255, 99, 132, 0.8)',
-            3: 'rgba(75, 192, 192, 0.8)',
-            4: 'rgba(255, 206, 86, 0.8)',
-          }
 
-          return colors[interval.id] || 'rgba(150, 150, 150, 0.8)'
+          return colors[(interval.id - 1) % colors.length]
         }),
         borderWidth: 1,
       },
@@ -55,19 +57,24 @@ function Chart({ data }) {
     scales: {
       x: {
         min: 0,
-
+        max: maxTime,
         title: {
           display: true,
           text: 'Tempo (s)',
+          color: '#ffffff',
         },
+        ticks: { color: '#ffffff' },
+        grid: { color: 'rgba(255, 255, 255, 0.1)' }
       },
 
       y: {
         title: {
           display: true,
           text: 'Processos',
+          color: '#ffffff',
         },
-
+        ticks: { color: '#ffffff' },
+        grid: { color: 'rgba(255, 255, 255, 0.1)' },
         offset: true,
       },
     },
@@ -87,16 +94,14 @@ function Chart({ data }) {
         },
       },
     },
-}
+  }
 
     return(
         <>
-            <Paper elevation={3} sx={{ p: 4, borderRadius: 2, backgroundColor: '#ffffff' }}>
-                <Bar
-                data={chartData}
-                options={chartOptions}
-                />
-            </Paper>
+          <Bar
+          data={chartData}
+          options={chartOptions}
+          />
         </>
     )
 }
