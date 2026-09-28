@@ -22,4 +22,5 @@ void esc_abstract::calc_estat(Saida& retorno){
     retorno.tt /= num_process;
     retorno.tw /= num_process;
     retorno.num_trocas = retorno.intervalos.size() - 1;
+    retorno.id = id;
 }
