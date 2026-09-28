@@ -2,9 +2,10 @@
 
 std::vector<Process> InputReader::readProcesses() {
     std::vector<Process> processes;
-    int c, d, p;
-    while (std::cin >> c >> d >> p) {
-        processes.emplace_back(c, d, p);
+    int current_id = 0, creation, duration, priority;
+    while (std::cin >> creation >> duration >> priority) {
+        processes.emplace_back(current_id, creation, duration, priority);
+        current_id++;
     }
     return processes;
 }

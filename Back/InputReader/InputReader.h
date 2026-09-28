@@ -7,7 +7,6 @@
 #include <fstream>
 #include <vector>
 #include "../aux.h"
-// TODO: Mover essas declarações de struct para um lugar mais adequado
 
 class InputReader {
     public:
