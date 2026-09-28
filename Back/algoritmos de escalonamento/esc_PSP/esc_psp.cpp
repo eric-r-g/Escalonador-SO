@@ -14,20 +14,20 @@ Saida esc_psp::exec_process(vector <Process> processos){
         return a.creation < b.creation;
     });
 
-    int atual = 0, t = 0;
+    int prox = 0, t = 0;
     priority_queue <Process, vector <Process>, ProcessComparator> fila;
     Saida saida;
 
     //  enquanto faltar algum processo ser incluido e removido na fila continua
-    while(atual < processos.size() || !fila.empty()) {
-        if(fila.empty() && atual < processos.size()){
-            t = max(t, processos[atual].creation);
+    while(prox < processos.size() || !fila.empty()) {
+        if(fila.empty()){
+            t = max(t, processos[prox].creation);
         }
 
         //  insere processos que já tem o tempo alcançado
-        while(atual < processos.size() && t >= processos[atual].creation){
-            fila.push(processos[atual]);
-            atual++;
+        while(prox < processos.size() && t >= processos[prox].creation){
+            fila.push(processos[prox]);
+            prox++;
         }
 
         //  olha para o processo elemento da fila e calcula seu intervalo
