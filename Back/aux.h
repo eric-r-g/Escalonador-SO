@@ -7,6 +7,11 @@
 
 using namespace std;
 
+struct Interv {
+    int id;
+    int ini, fim;
+};
+
 // TODO: ver alguma forma melhor para saida;
 struct Saida {
     vector <Interv> intervalos;
@@ -15,11 +20,6 @@ struct Saida {
     double tt;
     double tw;
     double num_trocas;
-};
-
-struct Interv {
-    int id;
-    int ini, fim;
 };
 
 struct Config {
