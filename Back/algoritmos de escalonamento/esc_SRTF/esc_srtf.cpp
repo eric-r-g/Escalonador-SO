@@ -1,4 +1,5 @@
 #include "esc_srtf.h"
+#include <queue>
 
 // TODO: Reorganizar esse código para que essa função fique mais enxuta
 // TODO: Testar esse código
@@ -19,7 +20,7 @@ Saida esc_srtf::exec_process(vector <Process> processos){
     int finished = 0;      // quantidade de processos que já foram finalizados
     int pos = 0;           // posição atual na lista de processos
     // fila de prioridade que guarda o próximo processo a ser executado no topo
-    priority_queue<pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>> pq;
+    priority_queue<pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>>> pq;
 
     Saida saida;
     
@@ -41,7 +42,7 @@ Saida esc_srtf::exec_process(vector <Process> processos){
 
         while (pos < processos.size()-1 && processos[pos+1].creation == t) {
             pos++;
-            pq.emplace_back(processos[pos].duration, processos[pos].id);
+            pq.emplace(processos[pos].duration, processos[pos].id);
             may_switch = true;
         }
 
@@ -54,7 +55,7 @@ Saida esc_srtf::exec_process(vector <Process> processos){
                 i.id = on_execution;
                 saida.intervalos.push_back(i);
 
-                pq.emplace_back(remaining, on_execution);
+                pq.emplace(remaining, on_execution);
 
                 pq.pop();
                 last_switch = t;
