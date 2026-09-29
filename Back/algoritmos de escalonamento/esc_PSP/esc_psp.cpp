@@ -30,7 +30,7 @@ Saida esc_psp::exec_process(vector <Process> processos){
             prox++;
         }
 
-        //  olha para o processo elemento da fila e calcula seu intervalo
+        //  olha para o proximo elemento da fila e calcula seu intervalo
         if(!fila.empty()){
             Process p = fila.top();
             fila.pop();
