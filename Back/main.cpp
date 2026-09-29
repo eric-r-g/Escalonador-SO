@@ -1,4 +1,4 @@
-#include "InputReader.h"
+#include "InputReader/InputReader.h"
 
 int main() {
     InputReader ir;
