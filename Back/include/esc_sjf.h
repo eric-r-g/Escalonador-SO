@@ -3,6 +3,7 @@
 
 #include "esc_abstract.h"
 #include <algorithm>
+#include <queue>
 
 class esc_sjf : esc_abstract {
     public:
