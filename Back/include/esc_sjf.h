@@ -1,7 +1,7 @@
 #ifndef ESC_SJF_H
 #define ESC_SJF_H
 
-#include "../esc_abstract/esc_abstract.h"
+#include "esc_abstract.h"
 #include <algorithm>
 
 class esc_sjf : esc_abstract {

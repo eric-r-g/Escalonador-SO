@@ -2,7 +2,7 @@
 *.o
 *.gch
 
-back
+build
 
 # Logs
 logs

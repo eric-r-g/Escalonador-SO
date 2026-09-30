@@ -1,25 +1,23 @@
-CC      := g++
-CFLAGS  := -Wall -Wextra -O2 -std=c++20
-LDFLAGS :=
-LDLIBS  := -lm
+CXX      := g++
+CPPFLAGS := -Iinclude                 # Flags de pré-processamento
+CXXFLAGS := -MMD -MP                  # Flags de compilação
+LDFLAGS  :=                           # Flags de linkagem
 
-TARGET  := back
-SRCS    := $(wildcard **/*.cpp)
-SRCS    += $(wildcard *.cpp)
-OBJS    := $(SRCS:.cpp=.o)
+SRC      := $(wildcard src/*.cpp)
+OBJ      := $(patsubst src/%.cpp,build/%.o,$(SRC))
+DEP      := $(OBJ:.o=.d)
 
-CFLAGS += -MMD -MP
--include $(OBJS:.o=.d)
+TARGET   := back
 
-.PHONY: all clean install test
+.PHONY: all clean
 
 all: $(TARGET)
 
-$(TARGET): $(OBJS)
-	$(CC) $(LDFLAGS) $^ -o $@ $(LDLIBS)
+$(TARGET): $(OBJ)
+	$(CXX) $(LDFLAGS) $^ -o $@
 
-clean:
-	rm -f $(OBJS) $(TARGET)
+build/%.o: src/%.cpp
+	@mkdir -p $(dir $@)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
-test: $(TARGET)
-	./$(TARGET) --test
+-include $(DEP)
