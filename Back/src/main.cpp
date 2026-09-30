@@ -1,5 +1,5 @@
-#include "InputReader/InputReader.h"
-#include "include/httplib.h"
+#include "InputReader.h"
+#include "httplib.h"
 
 int main() {
     //InputReader ir;
