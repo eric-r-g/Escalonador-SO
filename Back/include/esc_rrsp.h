@@ -1,14 +1,17 @@
-#ifndef ESC_SRTF_H
-#define ESC_SRTF_H
+#ifndef ESC_RRSP_H
+#define ESC_RRSP_H
 
 #include "esc_abstract.h"
 #include <algorithm>
 #include <queue>
 
-class esc_srtf : esc_abstract {
+class esc_rrsp : esc_abstract {
     public:
     Saida exec_process(vector <Process> processos);
-    esc_srtf();
+    esc_rrsp(int qt);
+
+    private:
+    int quantum;
 };
 
 #endif
