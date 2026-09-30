@@ -1,7 +1,7 @@
 #ifndef ESC_FCFS_H
 #define ESC_FCFS_H
 
-#include "../esc_abstract/esc_abstract.h"
+#include "esc_abstract.h"
 #include <algorithm>
 
 class esc_fcfs : esc_abstract {
