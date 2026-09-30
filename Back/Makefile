@@ -7,9 +7,12 @@ SRC      := $(wildcard src/*.cpp)
 OBJ      := $(patsubst src/%.cpp,build/%.o,$(SRC))
 DEP      := $(OBJ:.o=.d)
 
-TARGET   := back
+TARGET   := build/back
 
-.PHONY: all clean
+.PHONY: run all clean
+
+run: all
+	./build/back
 
 all: $(TARGET)
 
@@ -21,3 +24,6 @@ build/%.o: src/%.cpp
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
 -include $(DEP)
+
+clean:
+	@rm -rf build
