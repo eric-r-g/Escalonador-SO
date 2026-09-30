@@ -1,4 +1,4 @@
-#include "esc_sjf.h"
+#include "../include/esc_sjf.h"
 
 Saida esc_sjf::exec_process(vector <Process> processos){
     //  ordena pela duração

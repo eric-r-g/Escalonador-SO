@@ -3,7 +3,7 @@
 
 #include "esc_abstract.h"
 #include <algorithm>
-#include <queue>
+#include <set>
 
 class esc_pcp : esc_abstract {
     public:
