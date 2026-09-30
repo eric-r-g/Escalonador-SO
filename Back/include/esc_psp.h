@@ -1,7 +1,7 @@
 #ifndef ESC_PSP_H
 #define ESC_PSP_H
 
-#include "../esc_abstract/esc_abstract.h"
+#include "esc_abstract.h"
 #include <algorithm>
 #include <queue>
 
