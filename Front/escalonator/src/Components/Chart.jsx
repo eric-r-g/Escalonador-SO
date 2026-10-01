@@ -41,8 +41,11 @@ function Chart({ data }) {
         })),
         
         backgroundColor: intervals.map((interval) => {
-
-          return colors[(interval.id - 1) % colors.length]
+          const idNum = Number(interval.id) || 0;
+          
+          const index = Math.max(0, idNum); 
+          
+          return colors[index % colors.length];
         }),
         borderWidth: 1,
       },

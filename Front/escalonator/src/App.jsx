@@ -61,7 +61,16 @@ function App() {
                 }}
               >
                 {simulationData.map((methodData, index) => (
-                  <ChartMethod key={index} data={methodData} />
+                  <Box 
+                    key={index}
+                    sx={{
+                      width: 'calc(50% - 1rem)', 
+                      display: 'flex',
+                      justifyContent: 'center'
+                    }}
+                  >
+                    <ChartMethod data={methodData} />
+                  </Box>
                 ))}
               </Box>
 
