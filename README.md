@@ -30,3 +30,5 @@ E, logo após todas as dependências terem sido instaladas
 ```sh
 npm run dev
 ```
+
+Finalmente, você poderá utilizar a interface web acessando o link _http://localhost:5173/_ no seu navegador.
