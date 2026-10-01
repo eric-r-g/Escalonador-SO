@@ -38,7 +38,9 @@ int main() {
             esc_pcp pcp;
             esc_psp psp;
             esc_rrsp rrsp(config.quantum);
+            esc_rrcp rrcp(config.quantum, config.aging);
             esc_sjf sjf;
+            esc_srtf srtf;
             esc_srtf srtf;
 
             vector<Saida> saidas;
@@ -47,10 +49,9 @@ int main() {
             saidas.push_back(pcp.exec_process(processes));
             saidas.push_back(psp.exec_process(processes));
             saidas.push_back(rrsp.exec_process(processes));
+            saidas.push_back(rrcp.exec_process(processes));
             saidas.push_back(sjf.exec_process(processes));
             saidas.push_back(srtf.exec_process(processes));
-
-            std::cout << "opa" << std::endl;
 
             std::string json = "";
             json += "[\n";
