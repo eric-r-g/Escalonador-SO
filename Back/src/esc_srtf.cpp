@@ -1,4 +1,4 @@
-#include "../include/esc_srtf.h"
+#include "esc_srtf.h"
 #include <queue>
 
 // TODO: Reorganizar esse código para que essa função fique mais enxuta

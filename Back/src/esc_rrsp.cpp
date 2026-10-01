@@ -1,6 +1,6 @@
-#include "../include/esc_rrsp.h"
+#include "esc_rrsp.h"
 
-struct ProcessOn {
+struct ProcessOnRRSP {
     int id;
     int remaining_time;
     int priority;
@@ -13,8 +13,8 @@ Saida esc_rrsp::exec_process(vector <Process> processos){
 
     Saida saida;
     int prox = 0, t = 0;
-    queue <ProcessOn> fila;
-    ProcessOn needPush = {-1, -1, -1};
+    queue <ProcessOnRRSP> fila;
+    ProcessOnRRSP needPush = {-1, -1, -1};
 
     //  enquanto faltar algum processo ser incluido e removido na fila continua
     while(prox < processos.size() || !fila.empty() || needPush.id != -1) {
@@ -37,7 +37,7 @@ Saida esc_rrsp::exec_process(vector <Process> processos){
 
         //  olha para o proximo elemento da fila e calcula seu intervalo
         if(!fila.empty()){
-            ProcessOn p = fila.front();
+            ProcessOnRRSP p = fila.front();
             fila.pop();
 
             Interv i;

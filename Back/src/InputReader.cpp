@@ -1,9 +1,10 @@
 #include "InputReader.h"
 
-std::vector<Process> InputReader::readProcesses() {
+std::vector<Process> InputReader::readProcesses(string procsDesc) {
     std::vector<Process> processes;
     int current_id = 0, creation, duration, priority;
-    while (std::cin >> creation >> duration >> priority) {
+    std::istringstream procsDescFD(procsDesc);
+    while (procsDescFD >> creation >> duration >> priority) {
         processes.emplace_back(current_id, creation, duration, priority);
         current_id++;
     }
@@ -12,7 +13,7 @@ std::vector<Process> InputReader::readProcesses() {
 
 Config InputReader::readConfig() {
     if (!std::filesystem::exists("./config.txt")) {
-        std::cout << "Erro: Crie um arquivo de texto nomeado \"config.txt\" com as informações sobre o tamanho do quantum e o fator de envelhecimento a serem utilizados." << std::endl;
+        std::cerr << "Erro: Crie um arquivo de texto nomeado \"config.txt\" com as informações sobre o tamanho do quantum e o fator de envelhecimento a serem utilizados." << std::endl;
         std::exit(EXIT_FAILURE);
     }
 

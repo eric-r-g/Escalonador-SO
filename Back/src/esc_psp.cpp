@@ -1,4 +1,4 @@
-#include "../include/esc_psp.h"
+#include "esc_psp.h"
 
 //  comparador para a fila de prioridade, usando prioridade e duração
 struct ProcessComparator {

@@ -1,11 +1,15 @@
-#include "InputReader.h"
 #include "httplib.h"
 
-int main() {
-    //InputReader ir;
-    //Config config = ir.readConfig();
-    //std::vector<Process> processes = ir.readProcesses();
+#include "esc_abstract.h"
+#include "esc_fcfs.h"
+#include "esc_pcp.h"
+#include "esc_psp.h"
+#include "esc_rrsp.h"
+#include "esc_sjf.h"
+#include "esc_srtf.h"
+#include "InputReader.h"
 
+int main() {
     httplib::Server svr;
 
     // TODO: Colocar esses endpoints dentro de alguma(s) classe(s)
@@ -23,6 +27,70 @@ int main() {
 
     svr.Post("/procs", [](const httplib::Request &req, httplib::Response &res) {
             string procsDesc = req.body;
+            InputReader ir;
+
+            std::cout << procsDesc << std::endl;
+
+            Config config = ir.readConfig();
+            std::vector<Process> processes = ir.readProcesses(procsDesc);
+
+            esc_fcfs fcfs;
+            esc_pcp pcp;
+            esc_psp psp;
+            esc_rrsp rrsp(config.quantum);
+            esc_sjf sjf;
+            esc_srtf srtf;
+
+            vector<Saida> saidas;
+
+            saidas.push_back(fcfs.exec_process(processes));
+            saidas.push_back(pcp.exec_process(processes));
+            saidas.push_back(psp.exec_process(processes));
+            saidas.push_back(rrsp.exec_process(processes));
+            saidas.push_back(sjf.exec_process(processes));
+            //saidas.push_back(srtf.exec_process(processes));
+
+            std::cout << "opa" << std::endl;
+
+            std::string json = "";
+            json += "[\n";
+            for (int i = 0; i < saidas.size(); i++) {
+                Saida saida = saidas[i];
+                json += "{\n";
+                
+                json += "\"intervalos\": [\n";
+
+                for (int j = 0; j < saidas[i].intervalos.size(); j++) {
+                    auto[iid, iini, ifim] = saidas[i].intervalos[j];
+                    json += "{\n";
+
+                    json += "\"id\": " + std::to_string(iid) + ",\n";
+                    json += "\"ini\": " + std::to_string(iini) + ",\n";
+                    json += "\"fim\": " + std::to_string(ifim) + "\n";
+
+                    json += "}";
+                    if (j < saidas[i].intervalos.size()-1) json += ",";
+                    json += "\n";
+                }
+
+                json += "],\n";
+
+
+                json += "\"id\": \"" + saida.id + "\",\n";
+                json += "\"tt\": " + std::to_string(saida.tt) + ",\n";
+                json += "\"tw\": " + std::to_string(saida.tw) + ",\n";
+                json += "\"num_trocas\": " + std::to_string(saida.num_trocas) + "\n";
+
+                json += "}";
+                if (i < saidas.size()-1) json += ",";
+                json += "\n";
+            }
+            json += "]\n";
+
+            std::cout << json;
+
+            res.status = 201;
+            res.set_content(json, "application/json");
     });
 
     if (!svr.bind_to_port("0.0.0.0", 8080)) {
