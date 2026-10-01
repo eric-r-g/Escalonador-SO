@@ -48,7 +48,7 @@ int main() {
             saidas.push_back(psp.exec_process(processes));
             saidas.push_back(rrsp.exec_process(processes));
             saidas.push_back(sjf.exec_process(processes));
-            saidas.push_back(srtf.exec_process(processes));
+            //saidas.push_back(srtf.exec_process(processes));
 
             std::cout << "opa" << std::endl;
 
