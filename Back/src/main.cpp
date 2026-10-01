@@ -42,7 +42,6 @@ int main() {
             esc_rrcp rrcp(config.quantum, config.aging);
             esc_sjf sjf;
             esc_srtf srtf;
-            esc_srtf srtf;
 
             vector<Saida> saidas;
 
