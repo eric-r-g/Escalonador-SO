@@ -47,5 +47,5 @@ Saida esc_sjf::exec_process(vector <Process> processos){
 }
 
 esc_sjf::esc_sjf(){
-    id = "esc_sjf";
+    id = "Shortest Job First";
 }

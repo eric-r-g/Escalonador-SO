@@ -95,5 +95,5 @@ Saida esc_pcp::exec_process(vector <Process> processos){
 }
 
 esc_pcp::esc_pcp(){
-    id = "esc_pcp";
+    id = "por prioridade, com preempção por prioridade";
 }

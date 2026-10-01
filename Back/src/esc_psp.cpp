@@ -48,5 +48,5 @@ Saida esc_psp::exec_process(vector <Process> processos){
 }
 
 esc_psp::esc_psp(){
-    id = "esc_psp";
+    id = "por prioridade, sem preempção";
 }

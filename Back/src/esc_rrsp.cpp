@@ -73,5 +73,5 @@ Saida esc_rrsp::exec_process(vector <Process> processos){
 
 esc_rrsp::esc_rrsp(int qt){
     quantum = qt;
-    id = "esc_rrsp";
+    id = "Round-Robin com quantum, sem prioridade";
 }

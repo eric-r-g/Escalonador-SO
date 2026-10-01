@@ -93,5 +93,5 @@ Saida esc_rrcp::exec_process(vector <Process> processos){
 esc_rrcp::esc_rrcp(int qt, int ag){
     quantum = qt;
     aging = ag;
-    id = "esc_rrcp";
+    id = "Round-robin com prioridade e envelhecimento";
 }

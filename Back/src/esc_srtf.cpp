@@ -82,5 +82,5 @@ Saida esc_srtf::exec_process(vector <Process> processos){
 }
 
 esc_srtf::esc_srtf(){
-    id = "esc_srtf";
+    id = "Shortest Remaining Time First";
 }
