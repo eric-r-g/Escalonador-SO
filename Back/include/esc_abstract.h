@@ -8,7 +8,7 @@
 class esc_abstract{
     public:
     virtual Saida exec_process(vector <Process> processos) = 0;
-    void calc_estat(Saida& retorno);
+    void calc_estat(Saida& retorno, vector <Process> &processos);
 
     protected:
     string id;

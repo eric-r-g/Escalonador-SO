@@ -1,6 +1,7 @@
 *.out
 *.o
 *.gch
+*.json
 
 build
 
@@ -30,3 +31,4 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
