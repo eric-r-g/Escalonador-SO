@@ -20,7 +20,7 @@ Saida esc_fcfs::exec_process(vector <Process> processos){
         saida.intervalos.push_back(i);
     }
 
-    calc_estat(saida);
+    calc_estat(saida, processos);
     return saida;
 }
 

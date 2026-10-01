@@ -67,7 +67,7 @@ Saida esc_rrsp::exec_process(vector <Process> processos){
         }
     }
 
-    calc_estat(saida);
+    calc_estat(saida, processos);
     return saida;
 }
 

@@ -77,7 +77,7 @@ Saida esc_srtf::exec_process(vector <Process> processos){
         t++;
     }
 
-    calc_estat(saida);
+    calc_estat(saida, processos);
     return saida;
 }
 

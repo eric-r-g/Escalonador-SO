@@ -4,7 +4,7 @@ void esc_abstract::calc_estat(Saida& retorno, vector <Process> &processos){
     retorno.tt = 0, retorno.tw = 0;
     map <int, int> last_time;
 
-    for(Process p : processos)
+    for(Process &p : processos)
         last_time[p.id] = p.creation;
 
     for (Interv inter : retorno.intervalos){
@@ -20,8 +20,10 @@ void esc_abstract::calc_estat(Saida& retorno, vector <Process> &processos){
 
     int num_process = last_time.size();
 
-    retorno.tt /= num_process;
-    retorno.tw /= num_process;
+    if(num_process){
+        retorno.tt /= num_process;
+        retorno.tw /= num_process;
+    }
     if(retorno.intervalos.size() != 0) retorno.num_trocas = retorno.intervalos.size() - 1;
     else retorno.num_trocas = 0;
     retorno.id = id;
