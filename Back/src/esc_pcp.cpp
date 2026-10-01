@@ -5,6 +5,9 @@ struct ProcessOnPCP {
     int remaining_time;
     int priority;
 
+    ProcessOnPCP(int id_, int remaining_time_, int priority_)
+        : id(id_), remaining_time(remaining_time_), priority(priority_) {}
+
     bool operator <(const ProcessOnPCP& other) const {
         if(priority != other.priority) 
             return priority > other.priority;

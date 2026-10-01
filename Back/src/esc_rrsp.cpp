@@ -4,6 +4,9 @@ struct ProcessOnRRSP {
     int id;
     int remaining_time;
     int priority;
+
+    ProcessOnRRSP(int id_, int remaining_time_, int priority_)
+        : id(id_), remaining_time(remaining_time_), priority(priority_) {}
 };
 
 Saida esc_rrsp::exec_process(vector <Process> processos){

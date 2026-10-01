@@ -5,6 +5,9 @@ struct ProcessOn {
     int remaining_time;
     int priority;
     int entry_time;
+
+    ProcessOn(int id_, int remaining_time_, int priority_, int entry_time_)
+        : id(id_), remaining_time(remaining_time_), priority(priority_), entry_time(entry_time_) {}
 };
 
 struct ProcessComparator {

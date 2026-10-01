@@ -10,6 +10,11 @@ using namespace std;
 struct Interv {
     int id;
     int ini, fim;
+
+    Interv() {}
+
+    Interv(int id_, int ini_, int fim_)
+        : id(id_), ini(ini_), fim(fim_) {}
 };
 
 // TODO: ver alguma forma melhor para saida;

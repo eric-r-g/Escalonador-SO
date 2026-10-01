@@ -1,5 +1,6 @@
 #include "esc_srtf.h"
 #include <queue>
+#include <iostream>
 
 // TODO: Reorganizar esse código para que essa função fique mais enxuta
 // TODO: Testar esse código
@@ -23,6 +24,8 @@ Saida esc_srtf::exec_process(vector <Process> processos){
     priority_queue<pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>>> pq;
 
     Saida saida;
+
+    saida.id = "esc_srtf";
     
     while (finished < processos.size()) {
         if (on_execution != -1) {
@@ -65,6 +68,7 @@ Saida esc_srtf::exec_process(vector <Process> processos){
             may_switch = false;
         }
         t++;
+        std::cout << finished << std::endl;
     }
 
     calc_estat(saida);
