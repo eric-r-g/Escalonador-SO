@@ -13,20 +13,19 @@ Saida esc_srtf::exec_process(vector <Process> processos){
         return a.duration < b.duration;
     });
 
+    Saida saida;
+    saida.id = "esc_srtf";
+
     int t = 0;
-    int on_execution = -1; // id do processo em execução
-    int remaining = -1;    // tempo restante para o processo em execução ser concluído
+    int on_execution = -1;
+    int remaining = -1;
     int last_switch = -1;
     bool may_switch = false;
-    int finished = 0;      // quantidade de processos que já foram finalizados
-    int pos = 0;           // posição atual na lista de processos
-    // fila de prioridade que guarda o próximo processo a ser executado no topo
+    int finished = 0;
+    int pos = -1; // começa em -1 para incluir processos[0]
+
     priority_queue<pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>>> pq;
 
-    Saida saida;
-
-    saida.id = "esc_srtf";
-    
     while (finished < processos.size()) {
         if (on_execution != -1) {
             remaining--;
@@ -40,25 +39,32 @@ Saida esc_srtf::exec_process(vector <Process> processos){
                 finished++;
                 may_switch = true;
                 on_execution = -1;
+                remaining = -1; // importante
             }
         }
 
-        while (pos < processos.size()-1 && processos[pos+1].creation == t) {
+        // insere todos os processos que chegaram até o tempo t
+        while (pos + 1 < processos.size() && processos[pos+1].creation <= t) {
             pos++;
             pq.emplace(processos[pos].duration, processos[pos].id);
             may_switch = true;
         }
 
         if (may_switch && !pq.empty()) {
-            auto[r, id] = pq.top();
-            if (r < remaining) {
-                Interv i;
-                i.ini = last_switch;
-                i.fim = t;
-                i.id = on_execution;
-                saida.intervalos.push_back(i);
+            auto [r, id] = pq.top();
 
-                pq.emplace(remaining, on_execution);
+            // Se não há processo executando, pega qualquer um.
+            // Se há, só troca se o novo tiver menor duração restante.
+            if (on_execution == -1 || r < remaining) {
+                if (on_execution != -1) {
+                    Interv i;
+                    i.ini = last_switch;
+                    i.fim = t;
+                    i.id = on_execution;
+                    saida.intervalos.push_back(i);
+
+                    pq.emplace(remaining, on_execution);
+                }
 
                 pq.pop();
                 last_switch = t;
@@ -67,8 +73,8 @@ Saida esc_srtf::exec_process(vector <Process> processos){
             }
             may_switch = false;
         }
+
         t++;
-        std::cout << finished << std::endl;
     }
 
     calc_estat(saida);
