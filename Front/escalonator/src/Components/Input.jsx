@@ -7,45 +7,90 @@ import {
   Button, 
   Grid, 
   Stack,
-  InputAdornment
+  InputAdornment,
+  CircularProgress, 
+  Alert,       
+  Snackbar
 } from '@mui/material';
 
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
-function Input() {
+function Input({ onSimulationComplete }) {
     const [quantum, setQuantum] = useState(10);
     const [aging, setAging] = useState(5);
     const [manualText, setManualText] = useState('');
     const [fileName, setFileName] = useState('');
 
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState('');
+
     const handleFileUpload = (event) => {
         const file = event.target.files[0];
         if (file) {
-        setFileName(file.name);
-        
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            const content = e.target.result;
-            setManualText(content); 
-        };
-        reader.readAsText(file);
+            setFileName(file.name);
+            
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const content = e.target.result;
+                setManualText(content); 
+            };
+            reader.readAsText(file);
         }
     };
 
     const handleClear = () => {
         setManualText('');
         setFileName('');
+        const fileInput = document.getElementById('file-upload');
+        if (fileInput) fileInput.value = '';
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
+        if (!manualText.trim()) {
+            setError("Insira os processos manualmente ou envie um arquivo .txt.");
+            return;
+        }
 
-        const config = {
-            quantum: Number(quantum),
-            aging: Number(aging),
-            processData: manualText
-        };
+        setIsLoading(true);
+        setError('');
+
+        const configText = `quantum:${quantum}\naging:${aging}`;
         
+        try {
+            const configResponse = await fetch('http://localhost:8080/config', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'text/plain' },
+                body: configText,
+            });
+
+            if (!configResponse.ok) {
+                throw new Error('Falha ao enviar as configurações de Quantum e Aging.');
+            }
+
+            const procsResponse = await fetch('http://localhost:8080/procs', {
+                method: 'POST',
+                headers: { 'Content-Type': 'text/plain' },
+                body: manualText,
+            });
+
+            if (!procsResponse.ok) {
+                throw new Error('Falha ao enviar os processos para simulação.');
+            }
+
+            const data = await procsResponse.json();
+            
+            if (onSimulationComplete) {
+                onSimulationComplete(data);
+            }
+            
+        } catch (err) {
+            setError(err.message || 'Ocorreu um erro inesperado.');
+        } finally {
+            setIsLoading(false);
+        }
     };
+
+    const handleCloseError = () => setError('');
 
     return (
         <Paper elevation={3} sx={{ p: 4, borderRadius: 2, width: '100%', boxSizing: 'border-box' }}>
@@ -55,21 +100,21 @@ function Input() {
 
             <Box sx={{ display: 'flex', justifyContent: 'start', gap: 3, mb: 4 }}>
                 <TextField
-                label="Quantum"
-                type="number"
-                value={quantum}
-                onChange={(e) => setQuantum(e.target.value)}
-                InputProps={{
-                    endAdornment: <InputAdornment position="end">ms</InputAdornment>,
-                }}
-                sx={{ width: 250 }}
+                    label="Quantum"
+                    type="number"
+                    value={quantum}
+                    onChange={(e) => setQuantum(e.target.value)}
+                    InputProps={{
+                        endAdornment: <InputAdornment position="end">ms</InputAdornment>,
+                    }}
+                    sx={{ width: 250 }}
                 />
                 <TextField
-                label="Aging"
-                type="number"
-                value={aging}
-                onChange={(e) => setAging(e.target.value)}
-                sx={{ width: 250 }}
+                    label="Aging"
+                    type="number"
+                    value={aging}
+                    onChange={(e) => setAging(e.target.value)}
+                    sx={{ width: 250 }}
                 />
             </Box>
             
@@ -88,14 +133,12 @@ function Input() {
                                 value={manualText}
                                 onChange={(e) => setManualText(e.target.value)}
                                 variant="outlined"
-                                sx={{width: 521,
-                                '& .MuiOutlinedInput-root': {
-                                }
-                                }}
+                                disabled={isLoading}
+                                sx={{ width: 521 }}
                             />
                             <Box sx={{ display: 'flex', mt: 1 }}>
-                                <Button size="small" variant="contained" color="primary" onClick={handleClear} disableElevation>
-                                Limpar Texto
+                                <Button size="small" variant="contained" color="primary" onClick={handleClear} disableElevation disabled={isLoading}>
+                                    Limpar Texto
                                 </Button>
                             </Box>
                         </Grid>
@@ -109,28 +152,34 @@ function Input() {
                                 
                                 <Button
                                     component="label"
+                                    disabled={isLoading}
                                     sx={{
-                                    width: 500,
-                                    height: '250px',
-                                    border: '2px dashed #1976d2',
-                                    borderRadius: 2,
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    color: '#1976d2',
-                                    '&:hover': {
-                                        border: '2px dashed #1565c0',
-                                    }
+                                        width: 500,
+                                        height: '250px',
+                                        border: '2px dashed #1976d2',
+                                        borderRadius: 2,
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        color: '#1976d2',
+                                        '&:hover': {
+                                            border: '2px dashed #1565c0',
+                                        },
+                                        '&.Mui-disabled': {
+                                            borderColor: 'action.disabled',
+                                            color: 'action.disabled'
+                                        }
                                     }}
                                 >
                                     <CloudUploadIcon sx={{ fontSize: 60, mb: 2 }} />
                                     <Typography variant="body1" sx={{ textTransform: 'none' }}>
-                                    {fileName ? `Arquivo: ${fileName}` : "Arraste um arquivo .txt ou clique para selecionar."}
+                                        {fileName ? `Arquivo: ${fileName}` : "Arraste um arquivo .txt ou clique para selecionar."}
                                     </Typography>
                                     <input
-                                    type="file"
-                                    accept=".txt"
-                                    hidden
-                                    onChange={handleFileUpload}
+                                        type="file"
+                                        accept=".txt"
+                                        hidden
+                                        id="file-upload"
+                                        onChange={handleFileUpload}
                                     />
                                 </Button>
                                 <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: 1 }}>
@@ -140,17 +189,37 @@ function Input() {
                         </Grid>
                     </Box>
                 </Box>
+
                 <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 4, width: '100%' }}>
                     <Stack direction="row" spacing={2} justifyContent="flex-end" sx={{ mt: 4 }}>
-                        <Button variant="contained" color="inherit" onClick={handleClear}>
-                        Resetar
+                        <Button 
+                            variant="contained" 
+                            color="inherit" 
+                            onClick={handleClear}
+                            disabled={isLoading}
+                        >
+                            Resetar
                         </Button>
-                        <Button variant="contained" color="primary" onClick={handleSubmit} size="large">
-                        Simular Processos
+                        <Button 
+                            variant="contained" 
+                            color="primary" 
+                            onClick={handleSubmit} 
+                            size="large"
+                            disabled={isLoading}
+                            startIcon={isLoading ? <CircularProgress size={20} color="inherit" /> : null}
+                        >
+                            {isLoading ? 'Simulando...' : 'Simular Processos'}
                         </Button>
                     </Stack>
                 </Box>
+
             </Box>
+
+            <Snackbar open={!!error} autoHideDuration={6000} onClose={handleCloseError} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
+                <Alert onClose={handleCloseError} severity="error" sx={{ width: '100%' }}>
+                    {error}
+                </Alert>
+            </Snackbar>
         </Paper>
     );
 }

@@ -1,14 +1,16 @@
-import {Box, Typography, createTheme,ThemeProvider, CssBaseline, TableFooter, TableRow, TableCell, Link} from '@mui/material'
-
+import { Box, Typography, createTheme, ThemeProvider, CssBaseline, TableFooter, TableRow, TableCell, Link } from '@mui/material'
 import './App.css'
+import { useState } from 'react'
+
 import Input from './Components/Input.jsx'
-import data from './example.json'
 import ChartMethod from './Components/ChartMehod.jsx'
 import ChartComparation from './Components/ChartComparation.jsx'
 import TextTerminal from './Components/TextTerminal.jsx'
 import LinkGh from './Components/LinkGH.jsx'
 
 function App() {
+  const [simulationData, setSimulationData] = useState(null);
+
   const darkTheme = createTheme({
     palette: {
       mode: 'dark',
@@ -19,6 +21,9 @@ function App() {
     }
   })
 
+  const handleSimulationComplete = (newData) => {
+    setSimulationData(newData);
+  };
 
   return (
     <ThemeProvider theme={darkTheme}>
@@ -34,39 +39,45 @@ function App() {
           width: '100%', 
           maxWidth: '1200px',
           marginBottom: '2rem',
+          margin: '0 auto',
         }}>
           <Box className="input">
-            <Input/>
+            <Input onSimulationComplete={handleSimulationComplete}/>
           </Box>
-          <Typography variant="h2" gutterBottom>
-            Métodos de Escalonamento
-          </Typography>
-          <Box className="charts" sx={{ display: 'flex', gap: '2rem' }}>
-            <ChartMethod data={data[0]} />
-            <ChartMethod data={data[1]} />
-          </Box>
-          <Box className="charts" sx={{ display: 'flex', gap: '2rem' }}>
-            <ChartMethod data={data[2]} />
-            <ChartMethod data={data[3]} />
-          </Box>
-          <Box className="charts" sx={{ display: 'flex', gap: '2rem' }}>
-            <ChartMethod data={data[4]} />
-            <ChartMethod data={data[5]} />
-          </Box>
-          <Box className="charts" sx={{ display: 'flex', gap: '2rem', justifyContent: 'center' }}>
-            <ChartMethod data={data[6]} />
-          </Box>
-          <Typography variant="h2" gutterBottom>
-            Comparativo entre os métodos
-          </Typography>
-          <Box className="charts" >
-            <ChartComparation methods={data} />
-          </Box>
+
+          {simulationData && simulationData.length > 0 && (
+            <>
+              <Typography variant="h2" gutterBottom>
+                Métodos de Escalonamento
+              </Typography>
+              
+              <Box 
+                className="charts" 
+                sx={{ 
+                  display: 'flex', 
+                  flexWrap: 'wrap', 
+                  gap: '2rem', 
+                  justifyContent: 'center' 
+                }}
+              >
+                {simulationData.map((methodData, index) => (
+                  <ChartMethod key={index} data={methodData} />
+                ))}
+              </Box>
+
+              <Typography variant="h2" gutterBottom>
+                Comparativo entre os métodos
+              </Typography>
+              <Box className="charts">
+                <ChartComparation methods={simulationData} />
+              </Box>
+            </>
+          )}
         </Box>
       </Box>
       <TableFooter>
-          <TableRow>
-          <TableCell colSpan={5} align="center" sx={{display: 'flex', gap: '1rem', alignItems: 'baseline', borderBottom: 'none' }}>
+        <TableRow>
+          <TableCell colSpan={5} align="center" sx={{display: 'flex', gap: '1rem', alignItems: 'baseline', borderBottom: 'none', justifyContent: 'center'}}>
             <LinkGh nome="João Gabriel" link="https://github.com/JGabrielRS"/>
             <LinkGh nome="Guilherme Gondim" link="https://github.com/guilhermeglga"/>
             <LinkGh nome="Eric Rodrigues" link="https://github.com/eric-r-g"/>
