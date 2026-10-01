@@ -1,4 +1,4 @@
-#include "../include/esc_abstract.h"
+#include "esc_abstract.h"
 
 void esc_abstract::calc_estat(Saida& retorno){
     retorno.tt = 0, retorno.tw = 0;

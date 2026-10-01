@@ -1,11 +1,11 @@
-#include "../include/esc_pcp.h"
+#include "esc_pcp.h"
 
-struct ProcessOn {
+struct ProcessOnPCP {
     int id;
     int remaining_time;
     int priority;
 
-    bool operator <(const ProcessOn& other) const {
+    bool operator <(const ProcessOnPCP& other) const {
         if(priority != other.priority) 
             return priority > other.priority;
         if(remaining_time != other.remaining_time)
@@ -14,7 +14,7 @@ struct ProcessOn {
     }
 };
 
-bool atual_is_best(ProcessOn& atual, ProcessOn& other){
+bool atual_is_best(ProcessOnPCP& atual, ProcessOnPCP& other){
     // não existe processo atual ainda
     if (atual.id == -1) return false;
 
@@ -32,8 +32,8 @@ Saida esc_pcp::exec_process(vector <Process> processos){
     });
 
     int prox = 0, t = 0;
-    ProcessOn atual = {-1, -1, -1};
-    set <ProcessOn> fila;
+    ProcessOnPCP atual = {-1, -1, -1};
+    set <ProcessOnPCP> fila;
     Saida saida;
 
     //  enquanto faltar algum processo ser incluido e removido na fila continua
@@ -51,7 +51,7 @@ Saida esc_pcp::exec_process(vector <Process> processos){
 
         //  olha para o processo elemento da fila e ver se é melhor que o atual
         if(!fila.empty()){
-            ProcessOn p = *fila.begin();
+            ProcessOnPCP p = *fila.begin();
             if(!atual_is_best(atual, p)){
                 fila.erase(p);
 

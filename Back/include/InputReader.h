@@ -10,7 +10,7 @@
 
 class InputReader {
     public:
-        std::vector<Process> readProcesses();
+        std::vector<Process> readProcesses(string procsDesc);
         Config readConfig();
 };
 

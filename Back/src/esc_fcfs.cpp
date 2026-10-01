@@ -1,4 +1,4 @@
-#include "../include/esc_fcfs.h"
+#include "esc_fcfs.h"
 
 Saida esc_fcfs::exec_process(vector <Process> processos){
     //  ordena pela ordem de criação e duração
