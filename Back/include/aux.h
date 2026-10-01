@@ -17,7 +17,6 @@ struct Interv {
         : id(id_), ini(ini_), fim(fim_) {}
 };
 
-// TODO: ver alguma forma melhor para saida;
 struct Saida {
     vector <Interv> intervalos;
     string id;
@@ -37,6 +36,10 @@ struct Process {
     int creation;
     int duration;
     int priority;
+
+    Process () {}
+    Process (int id_, int creation_, int duration_, int priority_) 
+        : id(id_), creation(creation_), duration(duration_), priority(priority_){}
 };
 
 #endif
